@@ -10,3 +10,5 @@
 """
 
 mac = "AAAA:BBBB:CCCC"
+mac = mac.split(':')
+print('{:b}{:b}{:b}'.format(int(mac[0],16), int(mac[1],16), int(mac[2],16)))
