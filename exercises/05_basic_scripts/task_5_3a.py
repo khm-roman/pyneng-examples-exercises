@@ -11,6 +11,9 @@
 То есть эту задачу можно решить без использования условия if и циклов for/while.
 """
 
+
+
+
 access_template = [
     "switchport mode access",
     "switchport access vlan {}",
@@ -24,3 +27,21 @@ trunk_template = [
     "switchport mode trunk",
     "switchport trunk allowed vlan {}",
 ]
+dct = {
+   "access": {
+      "templ": access_template,
+      "quest": "Введите номер VLAN: "
+    },
+   "trunk": {
+      "templ": trunk_template,
+      "quest": "Введите разрешенные VLANы: "
+    }
+
+}
+mode = input('ведите режим работы интерфейса (access/trunk): ')
+if_num = input ('Введите тип и номер интерфейса: ')
+vlans = input('{}'.format(dct[mode]["quest"]))
+
+
+print('interface {}'.format(if_num))
+print('\n'.join(dct[mode]["templ"]).format(vlans))

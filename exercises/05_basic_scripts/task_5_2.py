@@ -24,3 +24,22 @@ Out[1]: '11111111111111111111111111110000'
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 """
+net = input ('Enter network in format x.x.x.x/xx: ')
+mask = net.split('/')[1]
+mask_b = "1" * int(mask) + "0" * (32-int(mask))
+mask_dd = [int(mask_b[0:8], 2), int(mask_b[8:16], 2), int(mask_b[16:24],2), int(mask_b[24:32], 2)]
+ip = net.split('/')[0].split('.')
+ip_template = '''
+Network:
+{0:<10}{1:<10}{2:<10}{3:<10}
+{0:08b}  {1:08b}  {2:08b}  {3:08b}
+'''
+print(ip_template.format(int(ip[0]), int(ip[1]), int(ip[2]), int(ip[3])))
+
+mask_template = '''
+Mask:
+{4}
+{0:<10}{1:<10}{2:<10}{3:<10}
+{0:08b}  {1:08b}  {2:08b}  {3:08b}
+'''
+print(mask_template.format(mask_dd[0], mask_dd[1], mask_dd[2], mask_dd[3], mask))
