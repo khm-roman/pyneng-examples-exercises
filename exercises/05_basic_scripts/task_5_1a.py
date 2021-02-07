@@ -44,3 +44,7 @@ london_co = {
         "routing": True,
     },
 }
+
+dev = input(f'''Enter device name ({', '.join(london_co.keys())}): ''')
+param = input (f'''Enter param name (available params for {dev} are: {', '.join(london_co[dev].keys())}): ''')
+print (london_co[dev] [param])

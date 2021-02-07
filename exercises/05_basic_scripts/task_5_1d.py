@@ -14,8 +14,8 @@ $ python task_5_1d.py
 
 Ограничение: нельзя изменять словарь london_co.
 
-Все задания надо выполнять используя только пройденные темы.
-То есть эту задачу можно решить без использования условия if.
+Все задания надо выполнять используя только пройденные темы. То есть эту задачу можно
+решить без использования условия if.
 """
 
 london_co = {
@@ -43,3 +43,7 @@ london_co = {
         "routing": True,
     },
 }
+dev = input(f'''Enter device name ({', '.join(london_co.keys())}): ''')
+params = ', '.join(london_co[dev].keys())
+param = input(f'''Enter param name (available params for {dev} are: {params}): ''')
+print (london_co[dev].get(param.lower(), 'Такого параметра нет'))
