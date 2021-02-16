@@ -16,4 +16,15 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 """
 
-ignore = ["duplex", "alias", "Current configuration"]
+ignore = ["duplex", "alias", "configuration"]
+from sys import argv
+src = argv[1]
+dst = argv[2]
+
+with open (src, 'r') as f, open(dst, 'w') as f2:
+    for line in f:
+           for i in ignore:
+             if i in line:
+                 break
+           else:
+                f2.write (line)
