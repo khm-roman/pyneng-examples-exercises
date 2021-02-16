@@ -83,7 +83,6 @@ def generate_access_config(intf_vlan_mapping, access_template):
               i.append(f'{command} {vlan}')
            else:
               i.append(f'{command}')
-
     return i
 
 result = generate_access_config(access_config_2, access_mode_template)
