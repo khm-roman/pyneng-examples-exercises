@@ -24,22 +24,12 @@ interface Loopback0
 """
 import re
 
-regex = (r' description.*')
-regex1 = (r'^interface\s(?P<iface>\S+)')
 
-def get_ints_without_description(filename):
-
-    with open (filename) as f:
-        result = []
-        for line in f:
-            match1 = re.search(regex1, line)
-            match = re.search(regex, line)
-            if match1:
-                result1 = match1.group('iface')
-                result.append(result1)
-            elif match:
-                result.remove(result1)
-
+def get_ints_without_description(config):
+    regex = re.compile(r"!\ninterface (?P<intf>\S+)\n"
+                       r"(?P<descr> description \S+)?")
+    with open(config) as src:
+        match = regex.finditer(src.read())
+        result = [m.group('intf') for m in match if m.lastgroup == 'intf']
         return result
 
-print(get_ints_without_description('config_r1.txt'))

@@ -26,6 +26,7 @@
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 """
+import re
 
 headers = ["hostname", "ios", "platform"]
 
@@ -35,7 +36,5 @@ data = [
     ("SW1", "12.2(55)SE9", "Cisco WS-C2960-8TC-L"),
 ]
 
-def convert_to_dict(headers,data):
-    return [(dict(zip(headers,i))) for i in data]
-
-print(convert_to_dict(headers,data))l
+def convert_to_dict(headers, sh_list):
+    return [dict(zip(headers, i)) for i in sh_list]
