@@ -29,7 +29,7 @@ description Connected to SW1 port Eth 0/1
 import re
 
 
-regex = (r'(?P<host>\w+\d+)\s+(?P<l_i>\w+\s\S+)\s+\d+\s+\w\s\w\s\w\s+\d+\s+(?P<r_i>\w+\s\S+)')
+regex = (r'(?P<host>\w+\d+)\s+(?P<l_i>\w+\s\S+)\s+\d+\s+[\w ]+\s+\S+\s+(?P<r_i>\w+\s\S+)')
 
 def generate_description_from_cdp(filename):
 
