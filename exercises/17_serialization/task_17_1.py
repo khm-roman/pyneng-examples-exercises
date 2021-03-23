@@ -58,4 +58,3 @@ if __name__ == "__main__":
     write_dhcp_snooping_to_csv(files, 'result.csv')
 
 
-
