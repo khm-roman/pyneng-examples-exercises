@@ -12,3 +12,11 @@
 mac = "AAAA:BBBB:CCCC"
 mac = mac.split(':')
 print('{:b}{:b}{:b}'.format(int(mac[0],16), int(mac[1],16), int(mac[2],16)))
+
+####### or
+mac = "AAAA:BBBB:CCCC"
+mac_l = mac.split(':')
+for i in mac_l:
+    mac_l[mac_l.index(i)] = ((bin(int(i, base=16))).lstrip('0b'))
+mac_b =  ''.join(mac_l)
+print(mac_b)
