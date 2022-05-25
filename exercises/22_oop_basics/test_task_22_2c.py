@@ -1,17 +1,14 @@
-import os
+import sys
+
 import pytest
 import task_22_2c
-import sys
 
 sys.path.append("..")
 
-from pyneng_common_functions import check_class_exists, check_attr_or_method, strip_empty_lines
+from pyneng_common_functions import (check_attr_or_method, check_class_exists,
+                                     check_pytest, strip_empty_lines)
 
-# Проверка что тест вызван через pytest ..., а не python ...
-from _pytest.assertion.rewrite import AssertionRewritingHook
-
-if not isinstance(__loader__, AssertionRewritingHook):
-    print(f"Тесты нужно вызывать используя такое выражение:\npytest {__file__}\n\n")
+check_pytest(__loader__, __file__)
 
 
 def test_class_created():
@@ -48,8 +45,8 @@ def test_send_config_commands_wrong_commands(
 
     # команда с ошибкой strict=False
     return_value = r1.send_config_commands(command, strict=False)
-    out, err = capsys.readouterr()
-    assert error in out, "Метод send_config_commands не выводит сообщение об ошибке"
+    stdout, err = capsys.readouterr()
+    assert error in stdout, "Метод send_config_commands не выводит сообщение об ошибке"
 
     # команда с ошибкой strict=True
     with pytest.raises(ValueError) as excinfo:

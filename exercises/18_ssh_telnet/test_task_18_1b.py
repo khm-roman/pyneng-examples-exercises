@@ -1,16 +1,12 @@
-import pytest
-import task_18_1b
 import sys
+
+import task_18_1b
 
 sys.path.append("..")
 
-from pyneng_common_functions import check_function_exists
+from pyneng_common_functions import check_function_exists, check_pytest
 
-# Проверка что тест вызван через pytest ..., а не python ...
-from _pytest.assertion.rewrite import AssertionRewritingHook
-
-if not isinstance(__loader__, AssertionRewritingHook):
-    print(f"Тесты нужно вызывать используя такое выражение:\npytest {__file__}\n\n")
+check_pytest(__loader__, __file__)
 
 
 def test_functions_created():
@@ -29,5 +25,6 @@ def test_function_return_value(capsys, first_router_wrong_ip):
     correct_stdout2 = "connection to device failed"
     out, err = capsys.readouterr()
     assert out != "", "Сообщение об ошибке не выведено на stdout"
-    assert correct_stdout1 in out or correct_stdout2 in out, "Выведено неправильное сообщение об ошибке"
-
+    assert (
+        correct_stdout1 in out or correct_stdout2 in out
+    ), "Выведено неправильное сообщение об ошибке"

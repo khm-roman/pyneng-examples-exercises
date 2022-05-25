@@ -1,14 +1,13 @@
 import os
-import pytest
-import task_20_1
+import sys
+
 import task_20_2
 
+sys.path.append("..")
 
-# Проверка что тест вызван через pytest ..., а не python ...
-from _pytest.assertion.rewrite import AssertionRewritingHook
+from pyneng_common_functions import check_pytest, render_jinja_template
 
-if not isinstance(__loader__, AssertionRewritingHook):
-    print(f"Тесты нужно вызывать используя такое выражение:\npytest {__file__}\n\n")
+check_pytest(__loader__, __file__)
 
 
 def test_templates_exists():
@@ -42,7 +41,7 @@ def test_function_return_value():
 
     template = "templates/cisco_router_base.txt"
     data = {"hostname": "R1"}
-    return_value = task_20_1.generate_config(template, data)
+    return_value = render_jinja_template(template, data)
     assert service_section in return_value, "В итоговой конфигурации нет команд service"
     assert alias_section in return_value, "В итоговой конфигурации нет команд alias"
     assert (

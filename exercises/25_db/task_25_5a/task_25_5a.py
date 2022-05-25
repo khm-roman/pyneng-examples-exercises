@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 Задание 25.5a
 
 Для заданий 25 раздела нет тестов!
@@ -19,14 +19,14 @@
 Обратите внимание, что строки с датой, которые пишутся в БД, можно сравнивать
 между собой.
 
-'''
+"""
 
-from datetime import timedelta, datetime
+from datetime import datetime, timedelta
 
 now = datetime.today().replace(microsecond=0)
 week_ago = now - timedelta(days=7)
 
-#print(now)
-#print(week_ago)
-#print(now > week_ago)
-#print(str(now) > str(week_ago))
+# print(now)
+# print(week_ago)
+# print(now > week_ago)
+# print(str(now) > str(week_ago))

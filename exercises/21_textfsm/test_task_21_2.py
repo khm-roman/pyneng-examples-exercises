@@ -1,13 +1,11 @@
-import pytest
-import task_21_1
 import os
+import sys
 
+sys.path.append("..")
 
-# Проверка что тест вызван через pytest ..., а не python ...
-from _pytest.assertion.rewrite import AssertionRewritingHook
+from pyneng_common_functions import check_pytest, get_textfsm_output
 
-if not isinstance(__loader__, AssertionRewritingHook):
-    print(f"Тесты нужно вызывать используя такое выражение:\npytest {__file__}\n\n")
+check_pytest(__loader__, __file__)
 
 
 def test_templates_exists():
@@ -33,8 +31,8 @@ def test_template():
     with open("output/sh_ip_dhcp_snooping.txt") as show:
         sh_ip_dhcp_snoop = show.read()
     template = "templates/sh_ip_dhcp_snooping.template"
-    return_value = task_21_1.parse_command_output(template, sh_ip_dhcp_snoop)
+    return_value = get_textfsm_output(template, sh_ip_dhcp_snoop)
 
     assert (
-        return_value == correct_return_value
+        correct_return_value == return_value
     ), "Шаблон templates/sh_ip_dhcp_snooping.template неправильно парсит данные"
