@@ -25,7 +25,6 @@ from netmiko import (
     NetmikoAuthenticationException,
 )
 
-
 def send_show_command(device, commands):
     try:
         with ConnectHandler(**device) as ssh:
