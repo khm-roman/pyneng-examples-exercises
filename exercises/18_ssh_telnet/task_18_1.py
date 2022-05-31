@@ -31,8 +31,8 @@ def send_show_command(device, commands):
             ssh.enable()
             for command in commands:
                 output = ssh.send_command(command)
-
-        return output
+        return str(output)
+        print(type(output))
     except (NetmikoTimeoutException, NetmikoAuthenticationException) as error:
         print(error)
 
@@ -43,3 +43,4 @@ if __name__ == "__main__":
 
     for dev in devices:
         print(send_show_command(dev, command))
+
