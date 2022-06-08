@@ -38,10 +38,73 @@
 Они должны быть, но тест упрощен, чтобы было больше свободы выполнения.
 """
 
-data = {
-    "tun_num": None,
-    "wan_ip_1": "192.168.100.1",
-    "wan_ip_2": "192.168.100.2",
-    "tun_ip_1": "10.0.1.1 255.255.255.252",
-    "tun_ip_2": "10.0.1.2 255.255.255.252",
-}
+import yaml
+from jinja2 import Environment, FileSystemLoader
+from task_20_5 import create_vpn_config
+from netmiko import (
+    ConnectHandler,
+    NetmikoTimeoutException,
+    NetmikoAuthenticationException,
+)
+
+def send_config_commands(device, commands):
+    try:
+        with ConnectHandler(**device) as ssh:
+            ssh.enable()
+            hostname = ssh.find_prompt()
+            output = ssh.send_config_set(commands)
+        result = (hostname+'\n'+output+'\n')
+        return result
+
+    except (NetmikoTimeoutException, NetmikoAuthenticationException) as error:
+        print(error)
+
+def find_tunnels(devices, command):
+    tun_intfs = []
+    try:
+        for device in devices:
+            with ConnectHandler(**device) as ssh:
+               ssh.enable()
+               output = ssh.send_command(command)
+               out = output.split()[1::2]
+               tun_intfs.extend(out)
+        if tun_intfs:
+            new_tun_num = int(sorted(tun_intfs)[-1][6:])+1
+        else:
+            new_tun_num = 0 
+        return new_tun_num
+        
+    except (NetmikoTimeoutException, NetmikoAuthenticationException) as error:
+        print(error)
+
+
+
+def configure_vpn (src_device_params, dst_device_params, src_template, dst_template, vpn_data_dict):
+    raw_commands = create_vpn_config(src_template, dst_template, vpn_data_dict)
+    commands_r1 = raw_commands[0].split('\n+')
+    commands_r2 = raw_commands[1].split('\n+')
+    output1 = send_config_commands(src_device_params, commands_r1)
+    output2 = send_config_commands(dst_device_params, commands_r2)
+    return (output1, output2)
+
+
+if __name__ == "__main__":
+   command = "sh run | i Tunnel"
+   
+   with open("devices.yaml") as f:
+           devices = yaml.safe_load(f)
+   src_device_params = devices[0]
+   dst_device_params = devices[1]
+   src_template = "templates/gre_ipsec_vpn_1.txt"
+   dst_template = "templates/gre_ipsec_vpn_2.txt"
+   new_tun_num = find_tunnels(devices, command)
+   
+   data = {
+       "tun_num": new_tun_num,
+       "wan_ip_1": "192.168.100.1",
+       "wan_ip_2": "192.168.100.2",
+       "tun_ip_1": "10.0.1.1 255.255.255.252",
+       "tun_ip_2": "10.0.1.2 255.255.255.252",
+   }
+   
+   print(configure_vpn(src_device_params, dst_device_params, src_template, dst_template, data))

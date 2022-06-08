@@ -13,20 +13,21 @@
 Проверить работу функции на шаблоне templates/for.txt
 и данных из файла data_files/for.yml.
 
-Важный нюанс: надо получить каталог из параметра template и использовать его, нельзя
-указывать текущий каталог в FileSystemLoader - то есть НЕ надо делать так FileSystemLoader(".").
-Указание текущего каталога, сломает работу других заданий/тестов.
 """
-import yaml
+import os
 from jinja2 import Environment, FileSystemLoader
+import yaml
 
-def generate_config (template, data_dict):
-    env = Environment(loader=FileSystemLoader("."), trim_blocks=True, lstrip_blocks=True)
-    templ = env.get_template(template)
-    result = templ.render(data_dict)
-    return result
 
-# так должен выглядеть вызов функции
+def generate_config(template, data_dict):
+    templ_dir, templ_file = os.path.split(template)
+    env = Environment(
+        loader=FileSystemLoader(templ_dir), trim_blocks=True, lstrip_blocks=True
+    )
+    templ = env.get_template(templ_file)
+    return templ.render(data_dict)
+
+
 if __name__ == "__main__":
     data_file = "data_files/for.yml"
     template_file = "templates/for.txt"
