@@ -38,3 +38,30 @@
 Проверить работу функции на примере вывода команды sh ip int br
 и устройствах из devices.yaml.
 """
+import yaml
+import textfsm
+from textfsm import clitable
+from concurrent.futures import ThreadPoolExecutor
+from netmiko import ConnectHandler
+from task_21_4 import send_and_parse_show_command
+
+
+
+def send_and_parse_command_parallel (devices, command, templates_path, limit=3):
+    output = {}
+    for dev in devices:
+        with ThreadPoolExecutor(max_workers=limit) as executor:
+            future = executor.submit(send_and_parse_show_command, dev, command, templates_path )
+            output[dev['host']] = future.result()
+    return output
+
+
+
+if __name__ == "__main__":
+    devices = 'devices.yaml'
+    command = 'sh ip int br'
+    templates_path = 'templates'
+    with open(devices) as f:
+        devices_list = yaml.safe_load(f)
+        result = send_and_parse_command_parallel(devices_list, command, templates_path)
+    print(result)

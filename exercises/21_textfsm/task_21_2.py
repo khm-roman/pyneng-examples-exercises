@@ -15,3 +15,19 @@
 
 Проверить работу шаблона с помощью функции parse_command_output из задания 21.1.
 """
+import textfsm
+
+def parse_command_output (template, command_output):
+    with open (template) as t, open(command_output) as out:
+        fsm = textfsm.TextFSM(t)
+        output = fsm.ParseText(out.read())
+        header = fsm.header
+        result = [header]+output
+    return  result
+
+if __name__ == "__main__":
+    output_file = "output/sh_ip_dhcp_snooping.txt"
+    template = "templates/sh_ip_dhcp_snooping.template"
+    result = parse_command_output(template, output_file)
+    print(result)
+
