@@ -13,7 +13,12 @@
 class Topology:
     def __init__(self, topology_dict):
         self.topology = self._normalize(topology_dict)
-
+    def _normalize(self, topology_dict):
+        self.norm = {}
+        for i in topology_dict.keys():
+            if i not in self.norm.values():
+                self.norm.update({i:topology_dict[i]})
+        return self.norm
 
 topology_example = {
     ("R1", "Eth0/0"): ("SW1", "Eth0/1"),
